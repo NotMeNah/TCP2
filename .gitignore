@@ -1,13 +1,12 @@
 # 忽略所有文件
 /*
 
-# 但不忽略你写的代码！
 !/Protocol.py
 !/client.py
 !/server.py
 !/.gitignore
 
-# 忽略 Python 缓存文件
+
 __pycache__/
 *.pyc
 *.pyo

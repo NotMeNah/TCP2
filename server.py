@@ -1,6 +1,6 @@
 import threading
 import queue
-from Protocol import  Connection
+from Protocol import  Connection,ProtocolException
 import socket
 import json
 
@@ -94,15 +94,23 @@ def main():
         client_socket,client_addr=server_socket.accept()
         print(f'Client connected: {client_addr}')
 
-        client_connection=Connection(client_socket)
-        remote_user=RemoteUser.try_handshake(client_connection)
-        connections[remote_user.user_name]=remote_user
+        try:
+            client_connection=Connection(client_socket)
+            remote_user=RemoteUser.try_handshake(client_connection)
+            connections[remote_user.user_name]=remote_user
 
-        threading.Thread(
-            target=connection_recv_thread_main,
-            args=(remote_user,),
-            daemon=True
-        ).start()
+            threading.Thread(
+                target=connection_recv_thread_main,
+                args=(remote_user,),
+                daemon=True
+            ).start()
+
+        except ProtocolException as e:
+            print(f"Protocol Exception:{e}")
+
+        except Exception as e:
+            print(f"Fatal exception:{e}")
+            exit(1)
 
 
 if __name__=='__main__':

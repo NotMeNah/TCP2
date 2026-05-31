@@ -27,7 +27,7 @@ def client_ui_thread_main():
     while True:
         msg_get=recv_pending_queue.get()
         if msg_get["event_type"]=="user_push_message":
-            sender=msg_get("sender","unknown")
+            sender=msg_get.get("sender","unknown")
             content=msg_get["data"]["content"]
             print(f"{sender}:{content}")
 
@@ -82,7 +82,7 @@ def main():
     threading.Thread(
         target=recv_msg_thread_main,
         args=(connection,),
-        daemon=True,
+        daemon=False,
     ).start()
 
     threading.Thread(
@@ -91,12 +91,11 @@ def main():
     ).start()
 
     threading.Thread(
-        target=user_msg_thread_main(),
+        target=user_msg_thread_main,
         daemon=True,
     ).start()
 
-    while True:
-        time.sleep(1)
+
 
 
 
