@@ -3,7 +3,7 @@ from socket import socket
 
 class ProtocolException(Exception):
     def __init__(self,msg):
-        super.__init__(msg)
+        super().__init__(msg)
 
 class Connection:
     sock:socket
@@ -20,7 +20,7 @@ class Connection:
     def recv_package(self,timeout:int | None )->bytes:
         self.sock.settimeout(timeout)
         header:bytes=self.sock.recv(4)
-        body_len=struct.unpack('>I',header)
+        body_len=struct.unpack('>I',header)[0]
         if body_len < 0:
             raise ProtocolException(f'Packet cannot have negative packet length.Receive:{body_len}')
         body:bytes=self.sock.recv(body_len)

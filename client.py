@@ -56,6 +56,7 @@ def recv_msg_thread_main(connection:Connection):
         recv_pending_queue.put(item_dict)
 
 def main():
+    print("client started")
     parser = argparse.ArgumentParser(description='服务端参数配置')
     parser.add_argument('-username', default='匿名用户', help='用户名')
     args = parser.parse_args()
@@ -94,6 +95,9 @@ def main():
         target=user_msg_thread_main,
         daemon=True,
     ).start()
+
+if __name__=='__main__':
+    main()
 
 
 
